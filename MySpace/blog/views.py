@@ -13,7 +13,7 @@ def login_view(request):
         form = UserLoginForm()
         context = {'form': form}
         return render(request, 'login.html', context)
-    elif request.me1thod == 'POST':
+    elif request.method == 'POST':
         form = UserLoginForm(request.POST)
         username = request.POST['username']
         password = request.POST['password']
@@ -42,15 +42,21 @@ class RegisterCreateView(CreateView):
 
           
 class PostListView(TemplateView):
-   model = Post
-   template_name = "index.html"
-   def get_context_data(self,**kwargs):
-       context = super(PostListView, self).get_context_data(**kwargs)
-       posts = Post.objects.all()
-       context['posts'] = posts[:5]
-       context['likes'] = Post.objects.annotate(number_likes=Count('likes')).order_by('-number_likes')[:5]
+    model = Post
+    template_name = "index.html"
+    def get_context_data(self,**kwargs):
+        context = super(PostListView, self).get_context_data(**kwargs)
+        request = self.request
+        if(request.user.is_authenticated()):
+            posts = Post.objects.all()
+            context['posts'] = posts[:5]
+            context['likes'] = Post.objects.annotate(number_likes=Count('likes')).order_by('-number_likes')[:5]
+        else:
+            posts = Post.objects.filter(acces=True)
+            context['posts'] = posts[:5]
+            context['likes'] = posts.annotate(number_likes=Count('likes')).order_by('-number_likes')[:5]
               
-       return context
+        return context
 
 
 class PostDetailView(DetailView):
