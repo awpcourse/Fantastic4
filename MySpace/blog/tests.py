@@ -1,6 +1,11 @@
 from django.test import TestCase
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
+import datetime
+from models import Post
+from models import Topics
+from django.test import Client
+
 
 
 class LoginViewTests(TestCase):
@@ -59,3 +64,19 @@ class RegisterViewTests(TestCase):
             }
         response = self.client.post(reverse('register'), invalid_data_dict)
         self.assertEquals(response.status_code, 200)
+
+class PostListTestCase(TestCase):
+    def testGetPosts(self):
+        topic = Topics.objects.create(title="Topic 1", description="description")
+        Post.objects.create(title="Post 1",text="Text 1", date_added = datetime.datetime.now(), topic = topic, acces = False)
+        Post.objects.create(title="Post 2",text="Text 2", date_added = datetime.datetime.now(), topic = topic, acces = True)
+        response = self.client.get('/blog/')
+        self.assertContains(response, "Post 2")
+    
+    def testUserCantSeePost(self):
+        topic = Topics.objects.create(title="Topic 1", description="description")
+        Post.objects.create(title="Post 1",text="Text 1", date_added = datetime.datetime.now(), topic = topic, acces = False)
+        Post.objects.create(title="Post 2",text="Text 2", date_added = datetime.datetime.now(), topic = topic, acces = True)
+        response = self.client.get('/blog/')
+        self.assertNotContains(response, "Post 1")
+
