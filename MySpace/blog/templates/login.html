@@ -1,0 +1,14 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+  <div class="container">
+    <div class="jumbotron" align="center">
+      <p class="error">{{ message }}</p>
+      <form method="post" class="form-group">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn">Log in</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}
