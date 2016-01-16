@@ -6,8 +6,8 @@ from django.contrib.auth.forms import UserCreationForm
 class UserCreateFrom(UserCreationForm):
     
     def save(self):
-        user = User.objects.create_user(username=self.cleaned_data['username'],
-                                        password=self.cleaned_data["password1"])
+        user = User.objects.create_user(username=self.data['username'],
+                                        password=self.data["password1"])
         return user
 
 class UserLoginForm(Form):
@@ -22,9 +22,12 @@ class RegisterForm(ModelForm):
         self.user = UserCreateFrom()
         self.fields.update(self.user.fields)
 
+    def is_valid(self):
+        return super(RegisterForm, self).is_valid() and self.user.is_valid()
+
     
     def save(self, commit=True):
-        self.user.cleaned_data = {field: self.cleaned_data.pop(field) for field in self.user.fields}
+        self.user.data = {field: self.cleaned_data.pop(field) for field in self.user.fields}
         user = self.user.save()
         self.instance.user = user
         return super(RegisterForm, self).save(commit=commit)
