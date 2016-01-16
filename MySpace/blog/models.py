@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse
 class UserInfo(models.Model):
     first_name = models.TextField(max_length=50)
     last_name = models.TextField(max_length=50)
-    birth_date = models.DateTimeField(auto_now_add=False)
+    birth_date = models.DateField(auto_now_add=False)
     email = models.TextField(max_length=50)
     user = models.OneToOneField(User)
 

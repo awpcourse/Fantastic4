@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.views.generic import CreateView, DetailView
 from django.shortcuts import render, redirect
+from django.core.urlresolvers import reverse_lazy
 from blog.forms import UserLoginForm, RegisterForm
 from blog.models import UserInfo, Post, Likes
 from django.http import HttpResponse
@@ -37,7 +38,7 @@ def logout_view(request):
 class RegisterCreateView(CreateView):
     form_class = RegisterForm
     template_name = 'register.html'
-    success_url = 'index.html'
+    success_url = reverse_lazy('index')
 
           
 class PostListView(TemplateView):

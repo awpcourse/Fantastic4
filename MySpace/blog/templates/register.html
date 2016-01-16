@@ -7,32 +7,33 @@ p{
 </style>
 
 <h2>&nbsp;Sign up</h2>
-<p class="error">{{ message }}</p>
+<p class="error">{{ form.errors }}</p>
 </br>
 <form class="well col-sm-9" method="post">
+    {% csrf_token %}
     <p>
         <label for="id_first_name">First name:</label>
-        <input id="id_first_name" type="id_first_name" name="id_first_name"></input> 
+        <input id="id_first_name" type="id_first_name" name="first_name" value="{{ form.first_name.value|default:'' }}"></input> 
     </p>
     
     <p>
         <label for="id_last_name">Last name:</label>
-        <input id="id_last_name" type="id_last_name" name="id_last_name"></input>
+        <input id="id_last_name" type="id_last_name" name="last_name" value="{{ form.last_name.value|default:'' }}"></input>
     </p>
 
     <p>
         <label for="id_birth_date">Birth date:</label>
-        <input id="id_birth_date" type="text" name="birth_date"></input>
+        <input id="id_birth_date" type="text" name="birth_date" value="{{ form.birth_date.value|default:'' }}"></input>
     </p>
 
     <p>
         <label for="id_email">Email:</label>
-        <input id="id_email" type="id_email" name="id_email"></input> 
+        <input id="id_email" type="id_email" name="email" value="{{ form.email.value|default:'' }}"></input> 
     </p>
 
     <p>
         <label for="id_username">Username:</label>
-        <input id="id_username" type="text" name="username" maxlength="30"></input>
+        <input id="id_username" type="text" name="username" maxlength="30" value="{{ form.username.value|default:'' }}"></input>
         <span class="helptext"> Required. 30 characters or fewer. Letters, digits and @/./+/-/_ only.</span>
     </p>
     
