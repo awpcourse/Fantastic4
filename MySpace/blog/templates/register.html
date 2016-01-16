@@ -6,10 +6,9 @@ p{
 }
 </style>
 
-<h2>&nbsp;Sign up</h2>
+<form method="post">
 <p class="error">{{ form.errors }}</p>
-</br>
-<form class="well col-sm-9" method="post">
+
     {% csrf_token %}
     <p>
         <label for="id_first_name">First name:</label>

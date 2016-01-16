@@ -3,15 +3,23 @@ from django.views.generic import CreateView, DetailView
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse_lazy
 from blog.forms import UserLoginForm, RegisterForm, UserPostCommentForm
-from blog.models import UserInfo, Post, Likes
+from blog.models import UserInfo, Post, Likes, Topics, UserPostComment
 from django.http import HttpResponse
 from django.db.models import Count
 from django.views.generic import TemplateView
+from django.contrib.auth.forms import UserCreationForm
+
+
+class ContextExtraMixin(object):
+	def get_context_data(self, **kwargs):
+		context = super(ContextExtraMixin, self).get_context_data(**kwargs)
+		context['topics'] = Topics.objects.all()
+		return context
 
 def login_view(request):
     if request.method == 'GET':
         form = UserLoginForm()
-        context = {'form': form}
+        context = {'form': form, 'topics' : Topics.objects.all(),}
         return render(request, 'login.html', context)
     elif request.method == 'POST':
         form = UserLoginForm(request.POST)
@@ -21,7 +29,8 @@ def login_view(request):
         if user is None:
             context = {
                 'form': form,
-                'message': 'Wrong username or password!'
+                'message': 'Wrong username or password!',
+                
             }
             return render(request, 'login.html', context)
 
@@ -34,16 +43,16 @@ def logout_view(request):
     logout(request)
     return redirect('login')
 
-
-class RegisterCreateView(CreateView):
+class RegisterCreateView(ContextExtraMixin, CreateView):
     form_class = RegisterForm
     template_name = 'register.html'
     success_url = reverse_lazy('index')
 
           
-class PostListView(TemplateView):
+class PostListView(ContextExtraMixin,TemplateView):
     model = Post
     template_name = "index.html"
+
     def get_context_data(self,**kwargs):
         context = super(PostListView, self).get_context_data(**kwargs)
         request = self.request
@@ -59,7 +68,9 @@ class PostListView(TemplateView):
         return context
 
 
-class PostDetailView(DetailView):
+
+class PostDetailView(ContextExtraMixin, DetailView):
+
 
     model = Post
     template_name = 'post_details.html'
@@ -86,6 +97,17 @@ class PostDetailView(DetailView):
     		comment.save()
     	return redirect('post_details', pk = obj.pk)
 
+class TopicPostListView(ContextExtraMixin, TemplateView):
+   model = Post
+   template_name = "index.html"
+   def get_context_data(self,**kwargs):
+       context = super(TopicPostListView, self).get_context_data(**kwargs)
+       
+       posts = Post.objects.filter( topic__pk = kwargs['pk'])
+       context['posts'] = posts
+       context['likes'] = posts.annotate(number_likes=Count('likes')).order_by('-number_likes')
+              
+       return context
 
 
 

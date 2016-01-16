@@ -34,14 +34,11 @@
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
-
   </div>
 </div> liked this post</p>
 
 {% if request.user.is_authenticated %}
-  <form method="post">
     <input type="submit" value="Like">
-  </form>
   {% endif %}
 <h4> <b>Comments: </b></h4>
  {% for comment in object.comments.all %}
