@@ -1,0 +1,39 @@
+{% extends 'layout.html' %}
+{% block content %}
+  <h2>Home</h2>
+<h1>Ultimele postari adaugate</h1>
+  {% for post in posts %}
+    <div class="Post">
+      <hr>
+
+	<h2>
+	{{post.title}}
+	</h2>
+      <h3>
+        {{ post.text | slice:":15" }}
+        {% if post.text|length > 15 %}
+        ...
+        {% endif %}
+      </h3>
+      <p>
+        on <b><small>{{ post.date_added }}</small></b>
+      </p>
+    {% endfor %}
+
+<h1>Cele mai votate postari</h1>
+	{% for post in likes %}
+<h2>
+	{{post.title}} - {{ post.likes_set.count }}
+	</h2>
+      <h3>
+        {{ post.text | slice:":15" }}
+        {% if post.text|length > 15 %}
+        ...
+        {% endif %}
+      </h3>
+      <p>
+        on <b><small>{{ post.date_added }}</small></b>
+      </p>
+</div>
+  {% endfor %}
+{% endblock %}
