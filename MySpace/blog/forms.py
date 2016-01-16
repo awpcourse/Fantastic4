@@ -1,6 +1,6 @@
-from django.forms import Form, CharField, DateTimeField, ImageField, Textarea, PasswordInput
+from django.forms import Form, CharField, TextInput,  DateTimeField, ImageField, Textarea, PasswordInput
 from django.forms import ModelForm
-from blog.models import UserInfo, User
+from blog.models import UserInfo, User, UserPostComment
 from django.contrib.auth.forms import UserCreationForm
 
 class UserCreateFrom(UserCreationForm):
@@ -33,4 +33,19 @@ class RegisterForm(ModelForm):
         model = UserInfo
         fields = ['first_name', 'last_name', 'birth_date', 'email']
 
+    
+class UserPostCommentForm(ModelForm):
 
+
+    def __init__(self, *args, **kwargs):
+        super(UserPostCommentForm, self).__init__(*args, **kwargs)
+        #self.comment = User
+        #self.fields.update(self.comment.fields)
+        self.fields['text'].widget.attrs['placeholder'] = 'Write a comment...'
+        self.fields['text'].widget.attrs['label'] = ''
+        self.fields['text'].widget.attrs['cols'] = 100
+        self.fields['text'].widget.attrs['rows'] =  5
+ 
+    class Meta:
+        model = UserPostComment
+        fields = ['text']
