@@ -1,13 +1,15 @@
 {% extends 'layout.html' %}
 {% block content %}
   <h2>Home</h2>
+<div class="container">
+<div class="row">
+<div class="col-md-6">
 <h1>Ultimele postari adaugate</h1>
   {% for post in posts %}
-    <div class="Post">
       <hr>
 
 	<h2>
-	{{post.title}}
+	<a href = "{% url 'post_details' post.pk %}">{{post.title}}</a>
 	</h2>
       <h3>
         {{ post.text | slice:":15" }}
@@ -19,11 +21,14 @@
         on <b><small>{{ post.date_added }}</small></b>
       </p>
     {% endfor %}
+</div>
 
+<div class="col-md-6">
 <h1>Cele mai votate postari</h1>
 	{% for post in likes %}
+<hr>
 <h2>
-	{{post.title}} - {{ post.likes_set.count }}
+	<a href = "{% url 'post_details' post.pk %}">{{post.title}} </a>- {{ post.likes_set.count }} Likes
 	</h2>
       <h3>
         {{ post.text | slice:":15" }}
@@ -34,6 +39,9 @@
       <p>
         on <b><small>{{ post.date_added }}</small></b>
       </p>
-</div>
+
   {% endfor %}
 {% endblock %}
+</div>
+</div>
+</div>
