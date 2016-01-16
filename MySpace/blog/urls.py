@@ -6,5 +6,5 @@ urlpatterns = [
     url(r'^logout/$', views.logout_view, name='logout'),
     url(r'^register/$', views.RegisterCreateView.as_view(), name='register'),
     url(r'^post/(?P<pk>\d+)/$', views.PostDetailView.as_view(), name='post_details'),
-
+    url(r'^$', views.PostListView.as_view(), name='index'),
 ]

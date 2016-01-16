@@ -7,6 +7,11 @@ from blog.forms import UserLoginForm, RegisterForm
 from blog.models import UserInfo, Post, Likes
 
 
+from django.http import HttpResponse
+from django.db.models import Count
+from django.views.generic import TemplateView
+from blog.models import Post, Likes
+
 def login_view(request):
     if request.method == 'GET':
         form = UserLoginForm()
@@ -38,6 +43,20 @@ class RegisterCreateView(CreateView):
     form_class = RegisterForm
     template_name = 'register.html'
 #    success_url = ''
+
+          
+
+class PostListView(TemplateView):
+   model = Post
+   template_name = "index.html"
+   def get_context_data(self,**kwargs):
+       context = super(PostListView, self).get_context_data(**kwargs)
+       posts = Post.objects.all()
+       context['posts'] = posts[:5]
+       context['likes'] = Post.objects.annotate(number_likes=Count('likes')).order_by('-number_likes')[:5]
+              
+       return context
+
 
 
 class PostDetailView(DetailView):
