@@ -37,17 +37,23 @@
 
   </div>
 </div> liked this post</p>
+
+{% if request.user.is_authenticated %}
+  <form method="post">
+    <input type="submit" value="Like">
+  </form>
+  {% endif %}
 <h4> <b>Comments: </b></h4>
  {% for comment in object.comments.all %}
       <p><b>{{ comment.author }}</b>: {{ comment.text }}</p>
   {% endfor %}
-
+  {% if request.user.is_authenticated %}
   <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Comment">
   </form>
-  
+  {% endif %}
 {% endblock %}
 </div>
 </div>
