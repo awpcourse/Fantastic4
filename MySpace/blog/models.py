@@ -25,6 +25,7 @@ class Post(models.Model):
     date_added = models.DateTimeField(
         auto_now_add=True)
     topic = models.ForeignKey(Topics)
+    acces = models.BooleanField(default=True)
 
     class Meta:
         ordering = ['-date_added']
