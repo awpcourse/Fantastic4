@@ -1,16 +1,11 @@
 from django.contrib.auth import authenticate, login, logout
 from django.views.generic import CreateView, DetailView
 from django.shortcuts import render, redirect
-
-
 from blog.forms import UserLoginForm, RegisterForm
 from blog.models import UserInfo, Post, Likes
-
-
 from django.http import HttpResponse
 from django.db.models import Count
 from django.views.generic import TemplateView
-from blog.models import Post, Likes
 
 def login_view(request):
     if request.method == 'GET':
@@ -42,10 +37,9 @@ def logout_view(request):
 class RegisterCreateView(CreateView):
     form_class = RegisterForm
     template_name = 'register.html'
-#    success_url = ''
+    success_url = 'index.html'
 
           
-
 class PostListView(TemplateView):
    model = Post
    template_name = "index.html"
@@ -56,7 +50,6 @@ class PostListView(TemplateView):
        context['likes'] = Post.objects.annotate(number_likes=Count('likes')).order_by('-number_likes')[:5]
               
        return context
-
 
 
 class PostDetailView(DetailView):

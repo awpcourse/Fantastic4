@@ -1,10 +1,52 @@
 {% extends 'layout.html' %}
 {% block content %}
-<h3>Register</h3>
+<style type="text/css">
+p{
+    font-size: 18px;
+}
+</style>
+
+<h2>&nbsp;Sign up</h2>
 <p class="error">{{ message }}</p>
-<form method="post">
-{% csrf_token %}
-{{ form.as_p }}
-<button type="submit">Register</button>
+</br>
+<form class="well col-sm-9" method="post">
+    <p>
+        <label for="id_first_name">First name:</label>
+        <input id="id_first_name" type="id_first_name" name="id_first_name"></input> 
+    </p>
+    
+    <p>
+        <label for="id_last_name">Last name:</label>
+        <input id="id_last_name" type="id_last_name" name="id_last_name"></input>
+    </p>
+
+    <p>
+        <label for="id_birth_date">Birth date:</label>
+        <input id="id_birth_date" type="text" name="birth_date"></input>
+    </p>
+
+    <p>
+        <label for="id_email">Email:</label>
+        <input id="id_email" type="id_email" name="id_email"></input> 
+    </p>
+
+    <p>
+        <label for="id_username">Username:</label>
+        <input id="id_username" type="text" name="username" maxlength="30"></input>
+        <span class="helptext"> Required. 30 characters or fewer. Letters, digits and @/./+/-/_ only.</span>
+    </p>
+    
+    <p>
+        <label for="id_password1"> Password:</label>
+        <input id="id_password1" type="password" name="password1"></input>    
+    </p>
+
+    <p>
+        <label for="id_password2">Password confirmation:</label>
+        <input id="id_password2" type="password" name="password2"></input>
+        <span class="helptext">Enter the same password as before, for verification.</span>
+    </p>
+    </br>
+    <button type="submit">Create Account</button>
 </form>
 {% endblock %}
